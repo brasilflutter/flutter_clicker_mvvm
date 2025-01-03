@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teste_clicker/view/shop/shop_list_tile.dart';
 import 'package:teste_clicker/view/shop/shop_view_model.dart';
 
 class ShopView extends StatefulWidget {
@@ -48,8 +49,28 @@ class _ShopViewState extends State<ShopView> {
           ],
         ),
       ),
-      body: const Center(
-        child: Text('Shop'),
+      body: ValueListenableBuilder(
+        valueListenable: viewModel.shopItemsNotifier,
+        builder: (context, value, child) {
+          if (value == null) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          return ListView.separated(
+            separatorBuilder: (context, index) => SizedBox(),
+            itemCount: value.length,
+            itemBuilder: (context, index) {
+              final item = value[index];
+
+              return ShopItemTile(
+                item: item,
+                onTap: () {},
+              );
+            },
+          );
+        },
       ),
     );
   }
